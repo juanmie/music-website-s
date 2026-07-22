@@ -1,0 +1,23 @@
+[Unit]
+Description=Music Website Spring Boot Backend
+After=network.target mysqld.service redis.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/music-website/app
+ExecStart=/usr/bin/java -Xms128m -Xmx384m -Dspring.profiles.active=prod -jar /opt/music-website/app/music-server.jar
+ExecStop=/bin/kill -15 $MAINPID
+Restart=on-failure
+RestartSec=10
+StandardOutput=append:/opt/music-website/logs/server.log
+StandardError=append:/opt/music-website/logs/server-error.log
+
+# 内存限制（防止 OOM）
+MemoryMax=512M
+MemoryHigh=400M
+
+Environment=JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+
+[Install]
+WantedBy=multi-user.target

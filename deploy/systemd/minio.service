@@ -1,0 +1,22 @@
+[Unit]
+Description=MinIO Object Storage
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/minio server /data/minio --address ":9000" --console-address ":9001"
+Restart=on-failure
+RestartSec=10
+StandardOutput=append:/opt/music-website/logs/minio.log
+StandardError=append:/opt/music-website/logs/minio-error.log
+
+Environment=MINIO_ROOT_USER=77gES76ImE0FX4vCmgpL
+Environment=MINIO_ROOT_PASSWORD=HAuGx6nefdIKpN7MmvBwz3GzKu3Pb158SCbwVWzm
+
+# 内存限制
+MemoryMax=200M
+MemoryHigh=150M
+
+[Install]
+WantedBy=multi-user.target
