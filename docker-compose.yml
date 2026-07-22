@@ -1,0 +1,136 @@
+version: '3.8'
+
+services:
+  # ============================
+  # MySQL 数据库
+  # ============================
+  mysql:
+    image: mysql:8.0
+    container_name: music-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Juanjuan0919/
+      MYSQL_DATABASE: tp_music
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./music-server/sql/tp_music.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================
+  # Redis 缓存
+  # ============================
+  redis:
+    image: redis:5.0.8-alpine
+    container_name: music-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================
+  # MinIO 文件存储
+  # ============================
+  minio:
+    image: minio/minio:latest
+    container_name: music-minio
+    restart: always
+    environment:
+      MINIO_ROOT_USER: 77gES76ImE0FX4vCmgpL
+      MINIO_ROOT_PASSWORD: HAuGx6nefdIKpN7MmvBwz3GzKu3Pb158SCbwVWzm
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    command: server --console-address ":9001" /data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================
+  # Spring Boot 后端
+  # ============================
+  music-server:
+    build:
+      context: ./music-server
+      dockerfile: Dockerfile
+    container_name: music-server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Juanjuan0919/
+    ports:
+      - "8888:8888"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+  # ============================
+  # 用户端前端 (Vue)
+  # ============================
+  music-client:
+    build:
+      context: ./music-client
+      dockerfile: Dockerfile
+    container_name: music-client
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - music-server
+
+  # ============================
+  # 管理后台前端 (Vue)
+  # ============================
+  music-manage:
+    build:
+      context: ./music-manage
+      dockerfile: Dockerfile
+      args:
+        NODE_HOST: '""'
+    container_name: music-manage
+    restart: always
+    ports:
+      - "8081:80"
+    depends_on:
+      - music-server
+
+  # ============================
+  # 需求评估前端 (Vue)
+  # ============================
+  demand-client:
+    build:
+      context: ./demand-client
+      dockerfile: Dockerfile
+      args:
+        NODE_HOST: '""'
+    container_name: demand-client
+    restart: always
+    ports:
+      - "8082:80"
+    depends_on:
+      - music-server
+
+volumes:
+  mysql-data:
+  redis-data:
+  minio-data:

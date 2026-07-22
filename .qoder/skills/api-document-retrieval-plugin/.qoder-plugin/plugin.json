@@ -1,0 +1,12 @@
+﻿{
+  "name": "api-document-retrieval",
+  "displayName": "API Document Retrieval",
+  "version": "2.0.0",
+  "description": "Intelligently match T100 and OA integration requirement documents with standard API field mapping lists, supporting multiple matching strategies and format retention.",
+  "descriptionZh": "智能匹配T100与OA类系统集成需求清单与标准API字段对照清单，支持多种匹配策略和格式保留。",
+  "author": { "name": "Qoder" },
+  "keywords": ["qoder-plugin", "skill", "api-matching", "t100", "oa-integration", "field-mapping"],
+  "category": "developer-tools",
+  "tags": ["skill"],
+  "skills": "./skills/"
+}

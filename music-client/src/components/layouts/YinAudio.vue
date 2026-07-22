@@ -1,5 +1,5 @@
 <template>
-  <audio :src="attachImageUrl(songUrl)" controls="controls" :ref="player" preload="true" @canplay="canplay" @timeupdate="timeupdate" @ended="ended">
+  <audio :src="attachImageUrl(songUrl)" controls="controls" :ref="player" preload="auto" @canplay="canplay" @timeupdate="timeupdate" @ended="ended">
     <!--（1）属性：controls，preload（2）事件：canplay，timeupdate，ended（3）方法：play()，pause() -->
     <!--controls：向用户显示音频控件（播放/暂停/进度条/音量）-->
     <!--preload：属性规定是否在页面加载后载入音频-->
@@ -13,7 +13,6 @@
 import { defineComponent, ref, getCurrentInstance, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { HttpManager } from "@/api";
-import { onMounted } from 'vue';
 
 export default defineComponent({
   setup() {
@@ -21,7 +20,7 @@ export default defineComponent({
     const { proxy } = getCurrentInstance();
     const store = useStore();
     const divRef = ref<HTMLAudioElement>();
-    const player = (el) => {
+    const player = (el:any) => {
       divRef.value = el;
     };
 
@@ -66,7 +65,7 @@ export default defineComponent({
         divRef.value.muted = false;
         muted.value = false;
       }
-      // divRef.value.play();
+      divRef.value.play();
       proxy.$store.commit("setIsPlay", true);
     }
     // 音乐播放时记录音乐的播放位置

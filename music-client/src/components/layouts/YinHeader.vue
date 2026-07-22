@@ -1,10 +1,13 @@
 <template>
+
   <div class="yin-header">
+
     <!--图标-->
     <div class="header-logo" @click="goPage()">
       <yin-icon :icon="iconList.ERJI"></yin-icon>
       <span>{{ musicName }}</span>
     </div>
+
     <yin-header-nav class="yin-header-nav" :styleList="headerNavList" :activeName="activeNavName" @click="goPage"></yin-header-nav>
     <!--搜索框-->
     <div class="header-search">
@@ -14,6 +17,8 @@
     <yin-header-nav v-if="!token" :styleList="signList" :activeName="activeNavName" @click="goPage"></yin-header-nav>
     <el-dropdown class="user-wrap" v-if="token" trigger="click">
       <el-image class="user" fit="contain" :src="attachImageUrl(userPic)" />
+
+
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item v-for="(item, index) in menuList" :key="index" @click.stop="goMenuList(item.path)">{{ item.name }}</el-dropdown-item>
@@ -21,6 +26,8 @@
       </template>
     </el-dropdown>
   </div>
+
+
 </template>
 
 <script lang="ts">
@@ -32,6 +39,7 @@ import YinHeaderNav from "./YinHeaderNav.vue";
 import mixin from "@/mixins/mixin";
 import { HEADERNAVLIST, SIGNLIST, MENULIST, Icon, MUSICNAME, RouterName, NavName } from "@/enums";
 import { HttpManager } from "@/api";
+
 
 export default defineComponent({
   components: {
@@ -54,6 +62,7 @@ export default defineComponent({
     const activeNavName = computed(() => store.getters.activeNavName);
     const userPic = computed(() => store.getters.userPic);
     const token = computed(() => store.getters.token);
+
 
     function goPage(path, name) {
       if (!path && !name) {
@@ -105,6 +114,9 @@ export default defineComponent({
   },
 });
 </script>
+
+
+
 
 <style lang="scss" scoped>
 @import "@/assets/css/var.scss";
@@ -191,4 +203,7 @@ export default defineComponent({
     cursor: pointer;
   }
 }
+
+
 </style>
+

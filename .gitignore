@@ -1,2 +1,9 @@
 .DS_Store
 .idea
+node_modules/
+dist/
+target/
+*.log
+logs/
+.venv/
+*.iml

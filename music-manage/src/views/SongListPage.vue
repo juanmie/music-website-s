@@ -156,7 +156,7 @@ export default defineComponent({
     function exportPlaylist() {
       axios({
         method: 'get',
-        url: 'http://localhost:8888/excle',
+        url: '/excle',
         responseType: 'blob', // 设置响应类型为blob
       })
         .then((response) => {

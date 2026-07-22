@@ -42,7 +42,7 @@
         
     <template v-slot="scope">
       <el-upload
-        :action="'http://localhost:8888/user/avatar/update?id=' + scope.row.id" 
+        :action="'/user/avatar/update?id=' + scope.row.id"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload">

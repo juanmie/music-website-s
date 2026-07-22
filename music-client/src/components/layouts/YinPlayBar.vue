@@ -9,11 +9,11 @@
       <div class="info-box">
         <!--歌曲图片-->
       <div @click="goPlayerPage">
-         <el-image class="song-bar-img" fit="contain"/>
+         <el-image class="song-bar-img" :src="attachImageUrl(songPic)"  fit="contain"/>
       </div>
         <!--播放开始结束时间-->
         <div v-if="songId">
-          <div class="song-info">{{ this.songTitle }} - {{ this.singerName }}</div>
+          <div class="song-info">{{ songTitle }} - {{ singerName }}</div>
           <div class="time-info">{{ startTime }} / {{ endTime }}</div>
         </div>
       </div>
@@ -71,6 +71,8 @@ import YinIcon from "./YinIcon.vue";
 import {HttpManager} from "@/api";
 import {formatSeconds} from "@/utils";
 import {Icon, RouterName} from "@/enums";
+
+
 
 export default defineComponent({
   components: {

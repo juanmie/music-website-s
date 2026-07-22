@@ -12,10 +12,13 @@
     "useDefineForClassFields": true,
     "sourceMap": true,
     "noImplicitAny": false,
+
+    "noImplicitThis": true,
+    "experimentalDecorators": true,// 启用装饰器语法
     "strictNullChecks": false,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
+      "webpack-env","vite/client", "vue/ref-macros","@types/web"
     ],
     "paths": {
       "@/*": [
@@ -26,7 +29,9 @@
       "esnext",
       "dom",
       "dom.iterable",
-      "scripthost"
+      "scripthost",
+      "es2021"
+
     ]
   },
   "include": [

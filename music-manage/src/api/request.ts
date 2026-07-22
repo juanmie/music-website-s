@@ -57,7 +57,7 @@ axios.interceptors.response.use(
 )
 
 export function getBaseURL() {
-  return BASE_URL;
+  return '';  // 图片等静态资源用相对路径，axios请求由 baseURL='/' 处理
 }
 
 /**

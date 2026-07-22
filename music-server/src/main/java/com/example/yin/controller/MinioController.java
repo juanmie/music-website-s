@@ -20,7 +20,7 @@ public class MinioController {
     @Autowired
     private MinioClient minioClient;
     //获取歌曲
-    @GetMapping("/user01/{fileName:.+}")
+    @GetMapping("/vatorimages/{fileName:.+}")
     public ResponseEntity<byte[]> getMusic(@PathVariable String fileName) {
         try {
             GetObjectArgs args = GetObjectArgs.builder()
@@ -45,7 +45,7 @@ public class MinioController {
         }
     }
     //获取歌手图片
-    @GetMapping("/user01/singer/img/{fileName:.+}")
+    @GetMapping("/vatorimages/singer/img/{fileName:.+}")
     public ResponseEntity<byte[]> getImage(@PathVariable String fileName) throws Exception {
         InputStream stream = minioClient.getObject(
                 GetObjectArgs.builder()
@@ -62,7 +62,7 @@ public class MinioController {
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
     //获取歌单图片
-    @GetMapping("/user01/songlist/{fileName:.+}")
+    @GetMapping("/vatorimages/songlist/{fileName:.+}")
     public ResponseEntity<byte[]> getImage1(@PathVariable String fileName) throws Exception {
         InputStream stream = minioClient.getObject(
                 GetObjectArgs.builder()
@@ -79,8 +79,8 @@ public class MinioController {
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
     //获取歌的图片
-    ///user01/singer/song/98329722.jfif
-    @GetMapping("/user01/singer/song/{fileName:.+}")
+    ///vatorimages/singer/song/98329722.jfif
+    @GetMapping("/vatorimages/singer/song/{fileName:.+}")
     public ResponseEntity<byte[]> getImage2(@PathVariable String fileName) throws Exception {
         InputStream stream = minioClient.getObject(
                 GetObjectArgs.builder()

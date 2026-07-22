@@ -1,0 +1,25 @@
+{
+  "devDependencies": {
+    "@vue/runtime-core": "^3.5.13",
+    "postcss": "^8.5.3",
+    "postcss-html": "^1.8.0",
+    "stylelint": "^16.18.0",
+    "stylelint-config-recess-order": "^6.0.0",
+    "stylelint-config-recommended-scss": "^14.1.0",
+    "stylelint-config-recommended-vue": "^1.6.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-scss": "^6.11.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@types/vue-router": "^2.0.0",
+    "@vueuse/core": "^9.13.0",
+    "@vueuse/shared": "^9.13.0",
+    "core-js": "^3.41.0",
+    "element-plus": "^2.9.7",
+    "es2020": "^1.1.9",
+    "es2024": "^0.0.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.0.13"
+  }
+}

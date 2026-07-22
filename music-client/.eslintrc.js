@@ -9,7 +9,7 @@ module.exports = {
     '@vue/typescript/recommended'
   ],
   parserOptions: {
-    ecmaVersion: 2020
+    ecmaVersion: "latest"
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -18,5 +18,6 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": ["off"],
     "@typescript-eslint/no-explicit-any": ["off"],
     'no-undef': 0
+
   }
 }

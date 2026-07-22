@@ -136,7 +136,7 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
     @Override
     public R updateSongPic(MultipartFile urlFile, int id) {
         String fileName =  urlFile.getOriginalFilename();
-        String storeUrlPath = "/user01/singer/song/" + fileName;
+        String storeUrlPath = "/vatorimages/singer/song/" + fileName;
         MinioUploadController.uploadSongImgFile(urlFile);
         Song song = new Song();
         song.setId(id);

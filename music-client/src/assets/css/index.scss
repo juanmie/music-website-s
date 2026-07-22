@@ -66,3 +66,7 @@ li {
 .el-select-dropdown__item {
   display: block !important;
 }
+
+html {
+  transition: background-color 0.3s ease-in-out;  // 全局过渡‌:ml-citation{ref="5,7" data="citationList"}
+}
