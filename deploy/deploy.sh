@@ -35,7 +35,7 @@ fi
 echo ""
 echo "========== 2/5 构建后端 =========="
 cd $SRC_DIR/music-server
-./mvnw package -DskipTests -B
+mvn package -DskipTests -B
 cp target/*.jar $APP_DIR/app/music-server.jar
 echo "后端构建完成"
 
