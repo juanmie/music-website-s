@@ -7,3 +7,10 @@ target/
 logs/
 .venv/
 *.iml
+
+# 大型二进制文件（不纳入版本控制）
+song/
+img/
+*.mp3
+*.m4a
+*.wav
