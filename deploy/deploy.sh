@@ -6,6 +6,10 @@
 # ================================================
 set -e
 
+# 显式指定 Java 1.8（避免被 /etc/profile.d/java.sh 中的 JDK 11 覆盖导致编译/运行版本错误）
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.312.b07-2.el8_5.x86_64
+export PATH=$JAVA_HOME/bin:$PATH
+
 APP_DIR=/opt/music-website
 SRC_DIR=/opt/music-website/source
 LOG_DIR=/opt/music-website/logs
@@ -35,7 +39,25 @@ fi
 echo ""
 echo "========== 2/5 构建后端 =========="
 cd $SRC_DIR/music-server
-mvn package -DskipTests -B
+echo "  使用 Java 版本: $(java -version 2>&1 | head -1)"
+mvn clean package -DskipTests -B
+
+# 校验依赖版本（POI 5.2.2 + xmlbeans 5.0.3 为唯一验证可用组合，其他组合均存在兼容问题）
+JAR_FILE=$(ls target/*.jar | head -1)
+echo "  校验 jar 内依赖版本..."
+if ! unzip -l "$JAR_FILE" | grep -E "poi-5\.2\.2\.jar" > /dev/null \
+    || ! unzip -l "$JAR_FILE" | grep -E "poi-ooxml-5\.2\.2\.jar" > /dev/null \
+    || ! unzip -l "$JAR_FILE" | grep -E "xmlbeans-5\.0\.3\.jar" > /dev/null; then
+    echo "  [错误] jar 内依赖版本不符合要求（需要 POI 5.2.2 + xmlbeans 5.0.3），请检查 pom.xml"
+    exit 1
+fi
+echo "  依赖版本校验通过 (POI 5.2.2 + xmlbeans 5.0.3)"
+
+# 备份旧 jar
+if [ -f "$APP_DIR/app/music-server.jar" ]; then
+    cp $APP_DIR/app/music-server.jar $APP_DIR/app/music-server.jar.bak.$(date +%Y%m%d%H%M%S)
+    echo "  旧 jar 已备份"
+fi
 cp target/*.jar $APP_DIR/app/music-server.jar
 echo "后端构建完成"
 
@@ -111,9 +133,18 @@ systemctl start music-server
 systemctl enable music-server
 echo "  后端已启动 (端口 8888)"
 
-# 等待后端启动完成
+# 等待后端启动完成（健康检查：最长 120 秒；实测启动约 20s + 数据加载约 10s）
 echo "  等待后端启动..."
-sleep 15
+for i in $(seq 1 60); do
+    if ss -tlnp 2>/dev/null | grep -q ':8888 '; then
+        echo "  后端 8888 端口已监听"
+        break
+    fi
+    if [ $i -eq 60 ]; then
+        echo "  [警告] 等待 120 秒后 8888 端口仍未监听，请检查日志: tail -50 $LOG_DIR/server.log"
+    fi
+    sleep 2
+done
 
 echo ""
 echo "=========================================="
